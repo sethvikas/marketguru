@@ -77,16 +77,21 @@ const IndexPage = () => {
                 currentVolumne = parseInt(response.data.currentVolumne)
                 setMessage('')
                 setDataDivClass('show')
-            } else {
-                setMessage('Incorrect Stock Symbol : ' + symbol)
+            } else if(response.data.note) {
+                setMessage('ERROR : ' + response.data.note)
                 setMessageClass('errorMessage')
                 setDataDivClass('hide')
+            } else {
+                setMessage('ERROR : Incorrect Stock Symbol : ' + symbol)
+                setMessageClass('errorMessage')
+                setDataDivClass('hide')                
             }
         })
-        .catch((error) => {
-            setMessage('Error')
+        .catch((response) => {
+            setMessage('Error : ' + response.data?response.data.note:'')
             setMessageClass('errorMessage')
-            console.log(error)
+            setDataDivClass('hide')
+            console.log(response)
         })  
 
         // Get Stock Trend
@@ -100,6 +105,7 @@ const IndexPage = () => {
         })
         .catch(() => {
             console.log('Error')
+            setDataDivClass('hide')
         })      
     }
 

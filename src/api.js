@@ -21,13 +21,14 @@ export default {
             // Parse response data
             const json = JSON.parse(data)
             
-            const symbol = json['Global Quote']['01. symbol']
-            const latestTradingDay = json['Global Quote']['07. latest trading day']
-            const highPrice = json['Global Quote']['03. high']
-            const lowPrice = json['Global Quote']['04. low']
-            const currentPrice = json['Global Quote']['05. price']
-            const currentVolumne = json['Global Quote']['06. volume']
-            const previousClose = json['Global Quote']['08. previous close']
+            const symbol = json['Global Quote']?json['Global Quote']['01. symbol']:''
+            const latestTradingDay = json['Global Quote']?json['Global Quote']['07. latest trading day']:''
+            const highPrice = json['Global Quote']?json['Global Quote']['03. high']:''
+            const lowPrice = json['Global Quote']?json['Global Quote']['04. low']:''
+            const currentPrice = json['Global Quote']?json['Global Quote']['05. price']:''
+            const currentVolumne = json['Global Quote']?json['Global Quote']['06. volume']:''
+            const previousClose = json['Global Quote']?json['Global Quote']['08. previous close']:''
+            const note = json['Note']
     
             data = {
                 symbol,
@@ -36,7 +37,8 @@ export default {
                 highPrice,
                 lowPrice,
                 previousClose,
-                currentVolumne
+                currentVolumne,
+                note
             }
     
             return data;
@@ -74,9 +76,6 @@ export default {
             
             // Get average volume for last 7 days
             last7DaysAvgVolume = parseInt(totalVolume/7)
-
-            console.log('last7DaysAvgVolume : ' + last7DaysAvgVolume)
-            console.log('last7DaysAvgVolume + 5% : ' + (last7DaysAvgVolume / 100) * 105)
 
             // Get closing price before 7 days
             let closingPriceBefore7Days = parseInt(json['Time Series (Daily)'][closingDates[7]]['4. close'])
